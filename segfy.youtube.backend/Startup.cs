@@ -18,9 +18,14 @@ namespace segfy.youtube.backend
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
+                .AddEnvironmentVariables();
+            this.Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -28,9 +33,11 @@ namespace segfy.youtube.backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetValue(typeof(string), "ConnectionString").ToString();
+
             services.AddControllers();
             services.AddTransient<ISearchLogRepository, SearchLogRepository>();
-            services.AddDbContext<YoutubeDbContext>(options => options.UseMySql($"server=segfy.cuafd5cpk4st.sa-east-1.rds.amazonaws.com;userid=admin;pwd=segfyyoutube;port=3306;database=youtube"));
+            services.AddDbContext<YoutubeDbContext>(options => options.UseMySql(connectionString));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Youtube API", Version = "v1" });
