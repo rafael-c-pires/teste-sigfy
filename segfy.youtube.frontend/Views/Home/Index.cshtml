@@ -1,0 +1,33 @@
+﻿@model List<SearchTerm>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Bem Vindo!</h1>
+    <div class="row"></div>
+        <form action="Details" method="post">
+            <input name="term" type="text" class="form-control col-9 float-left">
+            <button class="btn btn-primary col-2"> Buscar</button>
+        </form>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <div class="list-group">
+                @foreach (var item in Model)
+                { 
+                    <a href='@Url.Action("Details", new { @id = item.Id })' class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@item.Term</h5>
+                            <small>@item.SearchedAt</small>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

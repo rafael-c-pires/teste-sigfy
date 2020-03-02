@@ -1,0 +1,29 @@
+@model SearchTerm
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="text-center">
+    <h1>Detalhes da busca</h1>
+</div>
+@foreach (var log in Model.SearchLog)
+{    
+    <hr>
+    <div class="row">
+        <div class="col-6" style="min-height: 480px;">
+            <object width="100%" height="100%">
+                    <param name="movie" value="http://www.youtube.com/v/@log.VideoId" ></param>
+                    <param name="allowFullScreen" value="true"></param>
+                    <param name="allowscriptaccess" value="always"></param>
+                    <embed src="http://www.youtube.com/v/@log.VideoId" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="100%" height="100%"></embed>
+            </object>
+        </div>
+        <div class="col-6">
+            <div class="well">
+                <p><b>Canal: </b> @log.ChannelTitle</p>
+                <p><b>Vídeo: </b> @log.VideoTitle</p>
+                <p><b>Descrição: </b>@log.Description</p>
+                <p><b>Publicado em: </b>@log.PublishedAt</p>
+            </div>
+        </div>
+    </div>
+}
